@@ -1,0 +1,50 @@
+type User @entity {
+  id: ID!
+  followees: [User!]!
+  followers: [User!]!
+  tweets: [Tweet!]! @derivedFrom(field: "user")
+  likes: [Like!]! @derivedFrom(field: "user")
+
+  followeesCount: Int!
+  followersCount: Int!
+  tweetsCount: Int!
+  retweetsCount: Int!
+  commentsCount: Int!
+  likesCount: Int!
+  lastTweetUpdate: BigInt!
+}
+
+type Tweet @entity {
+  id: ID!
+  user: User!
+  "subtype value ===> 0: newtweet, 1: comment, 6: repost 7: quote"
+  subtype: Int!
+  commentOriginTweet: Tweet
+  repostOriginTweet: Tweet
+  quoteOriginTweet: Tweet
+  timestamp: BigInt!
+  comments: [Tweet!]! @derivedFrom(field: "commentOriginTweet")
+  reposts: [Tweet!]! @derivedFrom(field: "repostOriginTweet")
+  quotes: [Tweet!]! @derivedFrom(field: "quoteOriginTweet")
+  likes: [Like!]! @derivedFrom(field: "tweet")
+  burn: BigInt!
+  retweetCount: Int!
+  commentsCount: Int!
+  likesCount: Int!
+}
+
+type Like @entity {
+  id: ID!
+  user: User!
+  tweet: Tweet!
+  timestamp: BigInt!
+}
+
+type Follow @entity {
+  id: ID!
+  followee: User!
+  follower: User!
+  timestamp: BigInt!
+}
+
+
