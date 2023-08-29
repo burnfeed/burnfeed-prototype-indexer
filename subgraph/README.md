@@ -1,4 +1,4 @@
-# Example Subgraph
+#  Subgraph
 
 - init package
 ```
