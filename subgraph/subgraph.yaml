@@ -1,0 +1,43 @@
+specVersion: 0.0.4
+description: Gravatar for Ethereum
+repository: https://github.com/graphprotocol/example-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SimPubProtocol
+    network: mainnet
+    source:
+      address: '0xdD8BBEC1157398B53340d21BE824B43e17D4CA62'
+      abi: SimPubProtocol
+      startBlock: 1547355
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - User
+        - Tweet
+        - Like
+        - Follow
+      abis:
+        - name: SimPubProtocol
+          file: ./abis/SimPubProtocol.json
+      eventHandlers:
+        - event: Follow(indexed address,indexed address)
+          handler: handleFollow
+        - event: UnFollow(indexed address,indexed address)
+          handler: handleUnFollow
+        - event: Like(indexed address,string)
+          handler: handleLike
+        - event: UnLike(indexed address,string)
+          handler: handleUnLike
+        - event: NewTweet(indexed address,string,uint256)
+          handler: handleNewTweet
+        - event: Repost(indexed address,string,string,uint256)
+          handler: handleRepost
+        - event: Quote(indexed address,string,string,uint256)
+          handler: handleQuote
+        - event: NewComment(indexed address,string,string,uint256)
+          handler: handleNewComment
+      file: ./src/mapping.ts
